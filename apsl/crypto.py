@@ -9,12 +9,18 @@ from argon2 import PasswordHasher
 from argon2.exceptions import InvalidHashError, VerificationError, VerifyMismatchError
 
 DEFAULT_PBKDF2_ITERATIONS = 600_000
-_ARGON2 = PasswordHasher(time_cost=3, memory_cost=65_536, parallelism=2, hash_len=32, salt_len=16)
+_ARGON2 = PasswordHasher(
+    time_cost=3, memory_cost=65_536, parallelism=2, hash_len=32, salt_len=16
+)
 
 
-def hash_password(password: str, algorithm: str = "argon2id", *,
-                  pbkdf2_iterations: int = DEFAULT_PBKDF2_ITERATIONS,
-                  bcrypt_rounds: int = 12) -> str:
+def hash_password(
+    password: str,
+    algorithm: str = "argon2id",
+    *,
+    pbkdf2_iterations: int = DEFAULT_PBKDF2_ITERATIONS,
+    bcrypt_rounds: int = 12,
+) -> str:
     if not isinstance(password, str) or not password:
         raise ValueError("Password must be a non-empty string.")
     if algorithm == "argon2id":
@@ -22,7 +28,8 @@ def hash_password(password: str, algorithm: str = "argon2id", *,
     if algorithm == "bcrypt":
         if not 4 <= bcrypt_rounds <= 16:
             raise ValueError("bcrypt rounds must be between 4 and 16.")
-        return bcrypt.hashpw(password.encode(), bcrypt.gensalt(rounds=bcrypt_rounds)).decode("ascii")
+        result = bcrypt.hashpw(password.encode(), bcrypt.gensalt(rounds=bcrypt_rounds))
+        return result.decode("ascii")
     if algorithm == "pbkdf2":
         if not 100_000 <= pbkdf2_iterations <= 5_000_000:
             raise ValueError("PBKDF2 iterations must be between 100,000 and 5,000,000.")
@@ -48,9 +55,18 @@ def verify_password(password: str, encoded_hash: str) -> bool:
             iterations = int(count)
             if not 100_000 <= iterations <= 5_000_000:
                 return False
-            actual = hashlib.pbkdf2_hmac("sha256", password.encode(), bytes.fromhex(salt_hex), iterations)
+            actual = hashlib.pbkdf2_hmac(
+                "sha256", password.encode(), bytes.fromhex(salt_hex), iterations
+            )
             return hmac.compare_digest(actual, bytes.fromhex(expected_hex))
-    except (ValueError, TypeError, UnicodeError, VerificationError, VerifyMismatchError, InvalidHashError):
+    except (
+        ValueError,
+        TypeError,
+        UnicodeError,
+        VerificationError,
+        VerifyMismatchError,
+        InvalidHashError,
+    ):
         return False
     return False
 
