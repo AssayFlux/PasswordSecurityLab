@@ -10,14 +10,31 @@ def run_tui() -> None:
         raise SystemExit('Install the TUI extra: pip install ".[tui]"') from exc
 
     class APSLApp(App):
-        CSS = "Screen { align: center middle; } #panel { width: 90%; max-width: 72; border: round $accent; padding: 1 2; }"
+        CSS = """
+        Screen {
+            align: center middle;
+        }
+        #panel {
+            width: 90%;
+            max-width: 72;
+            border: round $accent;
+            padding: 1 2;
+        }
+        """
         TITLE = "AssayFlux Password Security Lab"
         SUB_TITLE = "Local educational research environment"
 
         def compose(self) -> ComposeResult:
             yield Header()
             with Container(id="panel"):
-                yield Static("[b]APSL 0.1.0[/b]\n\nPassword hashing and verification\nPassword strength audit\nBounded local dictionary experiment\n\nUse apsl --help for commands.\nAll experiments are local and authorized-only.")
+                yield Static(
+                    "[b]APSL 0.1.0[/b]\n\n"
+                    "1. Password hashing and verification\n"
+                    "2. Password strength audit\n"
+                    "3. Bounded local dictionary experiment\n\n"
+                    "Use apsl --help for commands.\n"
+                    "All experiments are local and authorized-only."
+                )
             yield Footer()
 
     APSLApp().run()
