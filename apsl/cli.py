@@ -65,12 +65,17 @@ def main():
             if args.report:
                 write_json_report(result, args.report)
         elif args.command == "lab" and args.action == "dictionary":
-            result = dictionary_simulation(args.encoded_hash, args.wordlist, max_attempts=args.max_attempts)
+            result = dictionary_simulation(
+                args.encoded_hash,
+                args.wordlist,
+                max_attempts=args.max_attempts,
+            )
             console.print_json(json.dumps(result))
             if args.report:
                 write_json_report(result, args.report)
         elif args.command == "digest":
-            console.print(digest_text(getpass.getpass("Demonstration input: "), args.algorithm))
+            value = getpass.getpass("Demonstration input: ")
+            console.print(digest_text(value, args.algorithm))
             console.print("[yellow]Digest demonstration only; not password storage.[/yellow]")
         elif args.command == "tui":
             from apsl.tui import run_tui
