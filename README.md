@@ -1,12 +1,17 @@
 # AssayFlux Password Security Lab
 
-**APSL** is an offline-first Python password-security research toolkit, developed Termux-first and designed to remain portable.
+**APSL** is an offline-first password-security research project, developed Termux-first. Its product direction is an Android app with a terminal-first interface; the current 0.1.0 foundation is a Python CLI with an optional Textual TUI.
 
 > **Authorized laboratory use only.** Experiments are restricted to synthetic credentials and hashes created for your own local lab. APSL does not attack online accounts, connect to third-party login services, collect credentials, or extract sessions.
 
-## Status
+## Identity and status
 
-Version 0.1.0 · Early development · CLI plus optional Textual TUI.
+- Product: AssayFlux Password Security Lab
+- Powered by: AssayFlux Cyber Security
+- Operation identity: AssayFlux White Hat ©
+- Version: 0.1.0
+- Current implementation: Python CLI and optional TUI
+- Product direction: Android app with a terminal-style interface
 
 ## Initial capabilities
 
@@ -17,7 +22,11 @@ Version 0.1.0 · Early development · CLI plus optional Textual TUI.
 - JSON reports without plaintext password fields.
 - CLI and optional TUI entry points.
 
-## Install
+## Terminal interface direction
+
+The Android app's primary interface is a terminal, not a dashboard made of cards. Its exact startup text, whitespace rules, [π°] line prefix, status colours, wrapping behaviour, and command prompt are documented in docs/terminal_ui_spec.md. Treat that document's startup transcript as the golden visual reference.
+
+## Install the current Python foundation
 
 ~~~bash
 pkg update && pkg upgrade
@@ -30,7 +39,7 @@ python -m pip install --upgrade pip setuptools wheel
 python -m pip install -e ".[dev]"
 ~~~
 
-## Run
+## Run the current Python foundation
 
 ~~~bash
 apsl --help
