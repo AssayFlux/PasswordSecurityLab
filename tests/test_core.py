@@ -1,6 +1,7 @@
 import pytest
-from apsl.crypto import digest_text, hash_password, verify_password
+
 from apsl.audit import audit_password
+from apsl.crypto import digest_text, hash_password, verify_password
 from apsl.lab import dictionary_simulation
 
 
@@ -29,7 +30,7 @@ def test_audit_does_not_return_password():
 
 def test_dictionary_is_bounded_and_local(tmp_path):
     words = tmp_path / "synthetic.txt"
-    words.write_text("first\nlab-secret\n", encoding="utf-8")
+    words.write_text("first\\nlab-secret\\n", encoding="utf-8")
     encoded = hash_password("lab-secret", "pbkdf2", pbkdf2_iterations=100_000)
     result = dictionary_simulation(encoded, words, max_attempts=10)
     assert result["matched"] is True
@@ -39,6 +40,6 @@ def test_dictionary_is_bounded_and_local(tmp_path):
 
 def test_dictionary_limit(tmp_path):
     words = tmp_path / "words.txt"
-    words.write_text("one\n", encoding="utf-8")
+    words.write_text("one\\n", encoding="utf-8")
     with pytest.raises(ValueError):
         dictionary_simulation("not-a-hash", words, max_attempts=100_001)
